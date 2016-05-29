@@ -1,3 +1,5 @@
 docs/*
 !docs/*.pdf
 Doxyfile
+lib/release/*.a
+lib/debug/*.a

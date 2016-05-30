@@ -11,11 +11,29 @@ YELLOW='\033[1;33m'
 WHITE='\033[1;37m'
 NC='\033[0m'
 
+DEBUG_FLAG="-g"
+
+CXX_FLAGS="-Wall -Werror -Wextra"
+CXX_STATIC_LIBRARY_FLAGS="-c"
+CXX_SHARED_LIBRARY_FLAGS="-fpic -c"
+CXX_VERSION="-std=c++11"
+
+C_FLAGS="-Wall -Werror -Wextra"
+C_STATIC_LIBRARY_FLAGS="-c"
+C_SHARED_LIBRARY_FLAGS="-fpic -c"
+
+FORTRAN_FLAGS=""
+FORTAN_STATIC_LIBRARY_FLAGS="-c"
+FORTRAN_SHARED_LIBRARY_FLAGS="-xcode=pic32 -c"
+
+
 # Initial Make Targets
 default:
 	make math_release
+	@echo ${WHITE}[*] ${GREEN}Successfully Compiled ML! Run it with ./ML${NC}
 debug:
 	make math_debug
+	@echo ${WHITE}[*] ${GREEN}Successfully Compiled ML! Run it with ./ML${NC}
 
 clean:
 	rm -rf temp/release/*
@@ -29,10 +47,10 @@ clean:
 
 math_release:
 	@echo  ${WHITE}[*] ${GREEN}Compiling Library 'Math'${NC}
-	g++ -c ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra -o ./temp/math.o
-	@echo g++ -c ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra -o ./temp/math.o
-	g++ -c src/cpp/utils/math/statistics.cpp -Wall -Werror -Wextra -Ltemp/math.o  -o temp/math_stats.o
-	@echo g++ -c src/cpp/utils/math/statistics.cpp -Wall -Werror -Wextra -Ltemp/math.o  -o temp/math_stats.o
+	g++ ${CXX_STATIC_LIBRARY_FLAGS} ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra ${CXX_VERSION} -o ./temp/math.o
+	@echo g++ ${CXX_STATIC_LIBRARY_FLAGS} ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra ${CXX_VERSION} -o ./temp/math.o
+	g++ ${CXX_STATIC_LIBRARY_FLAGS} src/cpp/utils/math/statistics.cpp -Wall -Werror -Wextra -Ltemp/math.o  ${CXX_VERSION} -o temp/math_stats.o
+	@echo g++ ${CXX_STATIC_LIBRARY_FLAGS} src/cpp/utils/math/statistics.cpp -Wall -Werror -Wextra -Ltemp/math.o  ${CXX_VERSION} -o temp/math_stats.o
 	@echo  ${WHITE}[*] ${GREEN}Archiving Static Library 'Math'${NC}
 	ar rcs lib/release/math.a temp/math.o temp/math_stats.o
 	@echo ar rcs lib/release/math.a temp/math.o temp/math_stats.o
@@ -43,9 +61,9 @@ math_release:
 
 math_debug:	
 	@echo  ${WHITE}[*] ${GREEN}Compiling Library 'Math Debug'${NC}
-	g++ -c ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra -o ./temp/mathd.o
-	@echo g++ -c ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra -o ./temp/mathd.o
-	g++ -c src/cpp/utils/math/statistics.cpp -Ltemp/mathd.o -Wall -Werror -Wextra -o temp/math_statsd.o
+	g++ ${CXX_STATIC_LIBRARY_FLAGS} ${DEBUG_FLAG} ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra ${CXX_VERSION} -o ./temp/mathd.o
+	@echo g++ ${CXX_STATIC_LIBRARY_FLAGS} ./src/cpp/utils/math/math.cpp -Wall -Werror -Wextra ${CXX_VERSION} -o ./temp/mathd.o
+	g++ ${CXX_STATIC_LIBRARY_FLAGS} ${DEBUG_FLAG} src/cpp/utils/math/statistics.cpp -Ltemp/mathd.o -Wall -Werror -Wextra ${CXX_VERSION} -o temp/math_statsd.o
 	@echo  ${WHITE}[*] ${GREEN}Archiving Static Library 'Math Debug'${NC}
 	@echo ar rcs lib/debug/mathd.a temp/mathd.o temp/math_statsd.o
 	@ar rcs lib/debug/mathd.a temp/mathd.o temp/math_statsd.o

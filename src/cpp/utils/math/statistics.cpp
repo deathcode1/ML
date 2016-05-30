@@ -5,6 +5,10 @@
  *      Author: nick
  */
 
+namespace math {
+
+}
+
 
 
 
